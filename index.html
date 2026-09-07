@@ -1,44 +1,301 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>H-Style🌿 — La mode, selon ton style ♡</title>
-<style>
-*{box-sizing:border-box} :root{--pink:#ef4d98;--pink2:#ffb5d4;--lav:#a96de7;--lilac:#eadcff;--cream:#fff9fc;--dark:#281b2d;--green:#27b76a;--text:#3b2a38}
-body{margin:0;font-family:Arial,sans-serif;color:var(--text);background:linear-gradient(135deg,#fff8fc,#f5eaff,#fff2f8);font-size:14px}
-.top{background:linear-gradient(90deg,#ffb7d6,#d9b9ff,#ffb8d7);padding:7px 5%;display:flex;justify-content:space-around;font-size:11px;font-weight:700}
-header{background:var(--dark);color:#fff;padding:12px 5%;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:30;box-shadow:0 5px 20px #3b204033}.logo{font-family:cursive;font-size:28px;color:#ffd3e7;white-space:nowrap}.logo small{font-size:11px;color:#e4caff}nav{display:flex;gap:23px;flex:1;justify-content:center}nav a{color:#fff;text-decoration:none;font-size:12px;font-weight:700}.headicons{display:flex;gap:13px;font-size:18px;align-items:center}.click{cursor:pointer}
-.hero{max-width:1250px;margin:auto;min-height:470px;padding:65px 7%;display:flex;align-items:center;background:radial-gradient(circle at 78% 30%,#fff 0 7%,transparent 22%),radial-gradient(circle at 88% 70%,#ffd0e6,transparent 28%),linear-gradient(120deg,#ffd0e5,#e7d4ff 55%,#fff0f7);overflow:hidden}
-.hero h1{font-family:cursive;color:#e64791;font-size:clamp(60px,9vw,105px);line-height:.8;margin:0 0 14px}.hero h2{font-family:cursive;font-size:31px;margin:0 0 12px}.hero p{max-width:560px;line-height:1.7;font-size:16px}.cta{display:inline-block;background:linear-gradient(90deg,#ed3e8c,#9d66e3);color:#fff;text-decoration:none;border:0;padding:14px 24px;border-radius:28px;font-weight:800;box-shadow:0 9px 25px #e5489655;cursor:pointer}
-.wrap{max-width:1250px;margin:auto}section{padding:38px 5%}.title{font-family:cursive;text-align:center;color:#d8428e;font-size:38px;margin:0 0 25px}.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:13px}.cat{background:linear-gradient(145deg,#fff,#ffe1ef);border:1px solid #f2c9de;border-radius:23px;padding:17px 8px;text-align:center;box-shadow:0 7px 20px #b25e9515}.cat i{font-style:normal;font-size:31px}.cat b{display:block;margin-top:8px;font-size:12px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}.toolbar button{border:1px solid #e7c9e4;background:#fff;border-radius:20px;padding:9px 14px;font-weight:700;color:#6b5268}.toolbar button.active{background:linear-gradient(90deg,#ed4a96,#a66be5);color:#fff;border:0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:19px}.card{background:#fff;border:1px solid #f0d7e5;border-radius:22px;overflow:hidden;box-shadow:0 9px 28px #a45d9517;position:relative}.photo{height:235px;background:linear-gradient(135deg,#ffe0ed,#e9dcff);display:flex;align-items:center;justify-content:center;color:#9d7d97;font-weight:800}.photo img{width:100%;height:100%;object-fit:cover}.badge{position:absolute;top:11px;left:11px;background:#e9458f;color:#fff;border-radius:15px;padding:6px 10px;font-size:10px;font-weight:900}.heart{position:absolute;top:10px;right:10px;border:0;background:#fff;width:32px;height:32px;border-radius:50%;font-size:18px}.body{padding:15px}.body h3{margin:0 0 8px;font-size:15px}.price{font-size:18px;color:#dd3c85;font-weight:900}.old{text-decoration:line-through;color:#aaa;font-size:12px;margin-right:5px}.stock{font-size:11px;color:#786676;margin:8px 0}.out{color:#d5314c;font-weight:900}.add{width:100%;padding:11px;border:0;border-radius:12px;background:linear-gradient(90deg,#ef4a95,#a66ce6);color:#fff;font-weight:800}.add:disabled{background:#bbb}.promoBox{background:linear-gradient(120deg,#ffd7ea,#e5d4ff);border-radius:28px;padding:38px;text-align:center}.pay{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.pill{background:#fff;border-radius:20px;padding:12px 18px;font-weight:800}.account{background:linear-gradient(135deg,#fff,#ffe9f2);border:1px solid #f1cfe1;border-radius:25px;padding:25px;max-width:600px;margin:auto}
-footer{background:var(--dark);color:#fff;text-align:center;padding:30px}.modal{display:none;position:fixed;inset:0;background:#211326aa;z-index:50;align-items:flex-end;justify-content:center}.modal.show{display:flex}.box{background:#fff;width:min(700px,100%);max-height:92vh;overflow:auto;border-radius:28px 28px 0 0;padding:24px}.close{float:right;border:0;background:none;font-size:28px}.row{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid #eee}.form input,.form select{width:100%;padding:12px;margin:6px 0 13px;border:1px solid #ead2e5;border-radius:11px;font:inherit}.choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice button{padding:14px;border:1px solid #e6cde1;border-radius:13px;background:#fff;font-weight:800}.choice button.sel{background:#ffe0ed;border-color:#ec4b95}.summary{background:#fff5fa;border-radius:15px;padding:15px;margin:12px 0}.wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;padding:14px;border-radius:13px;font-weight:900;margin-top:14px}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.cats{grid-template-columns:repeat(3,1fr)}nav{display:none}}
-@media(max-width:520px){.top{font-size:9px}.grid{gap:11px}.photo{height:185px}.hero{min-height:430px;padding:45px 7%}.hero h1{font-size:67px}.cats{gap:7px}.cat{padding:10px 4px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H-Style | E-Commerce Gabon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="top"><span>🚚 Livraison à Libreville · Akanda · Owendo</span><span>💳 Paiement Airtel / Libertis</span><span>💬 062102396</span></div>
-<header><div class="logo">H-Style🌿 <small>♡</small></div><nav><a href="#">Accueil</a><a href="#boutique">Boutique</a><a href="#promos">Promotions</a><a href="#about">À propos</a><a href="#contact">Contact</a></nav><div class="headicons"><span>⌕</span><span class="click" onclick="openAccount()">♙</span><span class="click" onclick="openCart()">🛍️ <b id="count">0</b></span></div></header>
+<body class="bg-gray-50 font-sans pb-24">
 
-<main class="wrap">
-<div class="hero"><div><h1>H-Style</h1><h2>La mode, selon ton style ♡</h2><p>Vêtements, chaussures, sacs, bijoux, beauté et plus encore… Des pièces choisies pour toutes celles qui aiment exprimer leur style.</p><a class="cta" href="#boutique">Découvrir la boutique →</a></div></div>
-<section><h2 class="title">Nos catégories ♡</h2><div class="cats"><div class="cat">👗<b>Vêtements</b></div><div class="cat">👠<b>Chaussures</b></div><div class="cat">👜<b>Sacs</b></div><div class="cat">💎<b>Bijoux & Accessoires</b></div><div class="cat">💄<b>Beauté</b></div><div class="cat">•••<b>Autres</b></div></div></section>
-<section id="boutique"><h2 class="title">Notre Boutique</h2><div id="filters" class="toolbar"></div><div id="products" class="grid"></div></section>
-<section id="promos"><div class="promoBox"><h2 class="title">Promotions ✨</h2><p>Des offres pensées pour te faire plaisir ♡</p><a class="cta" href="#boutique">Voir les articles</a></div></section>
-<section id="about"><div class="promoBox"><h2 class="title">H-Style🌿</h2><p>Une boutique féminine, cute et tendance, disponible au Gabon.</p></div></section>
-<section id="contact"><h2 class="title">Livraison & paiement</h2><div class="pay"><span class="pill">📍 Libreville · 1 500 FCFA</span><span class="pill">📍 Akanda · 2 000 FCFA</span><span class="pill">📍 Owendo · 3 000 FCFA</span><span class="pill">🏠 Retrait · Gratuit</span></div><br><div class="pay"><span class="pill">Airtel : 074232535</span><span class="pill">Libertis : 062102396</span></div></section>
-</main><footer>♡ Merci pour ta confiance · © 2026 H-Style🌿</footer>
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-pink-600 flex items-center gap-2">
+                <span>🌿</span> H-Style
+            </h1>
+            <div class="flex items-center gap-2">
+                <!-- Bouton Admin sécurisé -->
+                <button onclick="promptAdminAccess()" class="bg-pink-100 hover:bg-pink-200 text-pink-700 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1 transition">
+                    <i class="fa-solid fa-lock text-xs"></i> ⚙️ Admin
+                </button>
+                
+                <!-- Bouton Panier -->
+                <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-gray-200 p-2 rounded-lg text-gray-700 transition">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-pink-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<div id="cartModal" class="modal"><div class="box"><button class="close" onclick="closeModal('cartModal')">×</button><h2>Mon panier 🛍️</h2><div id="cartItems"></div><div id="cartTotal" class="summary"></div><button class="cta" style="width:100%" onclick="checkout()">Passer la commande →</button></div></div>
+    <main class="max-w-4xl mx-auto px-4 py-6">
 
-<div id="checkoutModal" class="modal"><div class="box"><button class="close" onclick="closeModal('checkoutModal')">×</button><h2>Finaliser ma commande ♡</h2><div class="form"><label>Nom complet</label><input id="custName" placeholder="Ton nom"><label>Téléphone WhatsApp</label><input id="custPhone" placeholder="06 xx xx xx"><label>Livraison</label><div class="choice"><button id="deliverBtn" class="sel" onclick="setDelivery(true)">🚚 Livraison</button><button id="pickupBtn" onclick="setDelivery(false)">🏠 Je récupère moi-même</button></div><div id="locFields"><label>Commune</label><select id="commune" onchange="updateDelivery()"><option value="Libreville">Libreville — 1 500 FCFA</option><option value="Akanda">Akanda — 2 000 FCFA</option><option value="Owendo">Owendo — 3 000 FCFA</option></select><label>Quartier</label><input id="quartier" placeholder="Précise ton quartier"></div><div id="checkoutSummary" class="summary"></div><p style="font-size:12px;color:#766676">Paiement : Airtel 074232535 ou Libertis 062102396. Tu peux aussi choisir le paiement à la livraison.</p><button class="cta" style="width:100%" onclick="sendOrder()">Confirmer et commander sur WhatsApp</button></div></div></div>
+        <!-- Panneau d'Administration (Masqué par défaut) -->
+        <section id="admin-panel" class="bg-white p-5 rounded-xl shadow-md border border-pink-200 mb-8 hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-pink-600"></i> Administration H-Style
+                </h2>
+                <button onclick="closeAdminPanel()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="add-product-form" onsubmit="handleProductSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Nom du produit</label>
+                    <input type="text" id="p-name" required placeholder="ex: Robe Fleurie d'Été" class="w-full p-2.5 border rounded-lg text-sm focus:ring-pink-500 focus:border-pink-500">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Catégorie</label>
+                        <select id="p-category" required class="w-full p-2.5 border rounded-lg text-sm bg-white">
+                            <option value="Vêtements">Vêtements</option>
+                            <option value="Sacs">Sacs</option>
+                            <option value="Chaussures">Chaussures</option>
+                            <option value="Bijoux">Bijoux</option>
+                            <option value="Beauté">Beauté</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Prix (FCFA)</label>
+                        <input type="number" id="p-price" required placeholder="15000" class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                </div>
 
-<div id="accountModal" class="modal"><div class="box"><button class="close" onclick="closeModal('accountModal')">×</button><div class="account"><h2>Mon compte ♡</h2><p style="color:#786676">Connecte-toi pour retrouver tes informations de commande sur cet appareil.</p><div class="form"><input id="accName" placeholder="Nom complet"><input id="accPhone" placeholder="Téléphone WhatsApp"><button class="cta" style="width:100%" onclick="saveAccount()">Enregistrer mon compte</button></div><p id="accStatus"></p></div></div></div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">URL de l'image</label>
+                    <input type="url" id="p-image" required placeholder="https://exemple.com/image.jpg" class="w-full p-2.5 border rounded-lg text-sm">
+                </div>
 
-<script>
-const fallback=[
-{id:1,name:"Talons à nœud",category:"Chaussures",price:22000,oldPrice:26000,sizes:"36 · 37 · 38 · 39 · 40 · 41",stock:8,image:""},
-{id:2,name:"Robe longue élégante",category:"Vêtements",price:28000,oldPrice:0,sizes:"S · M · L",stock:5,image:""},
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Tailles / Options (séparées par une virgule)</label>
+                        <input type="text" id="p-sizes" placeholder="S, M, L, XL" class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Stock disponible</label>
+                        <input type="number" id="p-stock" value="10" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-save-product" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 rounded-lg transition text-sm">
+                    Enregistrer dans la Base de Données
+                </button>
+            </form>
+        </section>
+
+        <!-- Filtres par catégorie -->
+        <section class="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+            <button onclick="filterCategory('all')" class="bg-pink-600 text-white px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm">Tout</button>
+            <button onclick="filterCategory('Vêtements')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Vêtements</button>
+            <button onclick="filterCategory('Sacs')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Sacs</button>
+            <button onclick="filterCategory('Chaussures')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Chaussures</button>
+            <button onclick="filterCategory('Bijoux')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Bijoux</button>
+        </section>
+
+        <!-- Grille de produits -->
+        <section id="products-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="col-span-full text-center py-12 text-gray-400">
+                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+                <p class="text-sm">Chargement du catalogue...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal du Panier / Commande -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/50 z-50 flex justify-end hidden">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto">
+            <div>
+                <div class="flex justify-between items-center pb-4 border-b">
+                    <h3 class="font-bold text-lg text-gray-800">Votre Panier</h3>
+                    <button onclick="toggleCart()" class="text-gray-400 text-xl"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                
+                <div id="cart-items" class="py-4 space-y-3">
+                    <!-- Articles du panier dynamiques -->
+                </div>
+            </div>
+
+            <div class="border-t pt-4 space-y-4">
+                <div class="flex justify-between text-base font-bold text-gray-800">
+                    <span>Total :</span>
+                    <span id="cart-total">0 FCFA</span>
+                </div>
+                <button onclick="sendWhatsAppOrder()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Commander sur WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Configuration Supabase ---
+        const SUPABASE_URL = 'VOTRE_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'VOTRE_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Mot de passe Administrateur
+        const ADMIN_CODE = "Hstyle2026";
+        
+        let allProducts = [];
+        let cart = [];
+
+        // Mot de passe pour accéder à l'admin
+        function promptAdminAccess() {
+            const pwd = prompt("Entrez le mot de passe Administrateur H-Style :");
+            if (pwd === ADMIN_CODE) {
+                document.getElementById('admin-panel').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (pwd !== null) {
+                alert("Mot de passe incorrect.");
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('admin-panel').classList.add('hidden');
+        }
+
+        // Charger les produits au démarrage
+        async function fetchProducts() {
+            const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+            if (error) {
+                console.error("Erreur de chargement:", error);
+                document.getElementById('products-grid').innerHTML = `<p class="col-span-full text-center text-red-500">Erreur lors de la récupération des articles.</p>`;
+                return;
+            }
+            allProducts = data || [];
+            renderProducts(allProducts);
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('products-grid');
+            if (products.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-10">Aucun produit disponible pour le moment.</p>`;
+                return;
+            }
+
+            grid.innerHTML = products.map(p => `
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex flex-col justify-between">
+                    <img src="${p.image_url}" alt="${p.name}" class="w-full h-40 object-cover">
+                    <div class="p-3 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full font-medium">${p.category}</span>
+                            <h3 class="font-semibold text-sm text-gray-800 mt-1 line-clamp-1">${p.name}</h3>
+                            <p class="text-pink-600 font-bold text-sm mt-1">${Number(p.price).toLocaleString()} FCFA</p>
+                        </div>
+                        <button onclick="addToCart('${p.id}')" class="w-full mt-3 bg-gray-900 hover:bg-pink-600 text-white text-xs py-2 rounded-lg font-medium transition">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Ajouter un produit (Admin)
+        async function handleProductSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-product');
+            btn.innerText = "Enregistrement en cours...";
+            btn.disabled = true;
+
+            const name = document.getElementById('p-name').value;
+            const category = document.getElementById('p-category').value;
+            const price = parseFloat(document.getElementById('p-price').value);
+            const image_url = document.getElementById('p-image').value;
+            const sizes = document.getElementById('p-sizes').value.split(',').map(s => s.trim()).filter(Boolean);
+            const stock = parseInt(document.getElementById('p-stock').value);
+
+            const { error } = await supabase.from('products').insert([{ name, category, price, image_url, sizes, stock }]);
+
+            btn.disabled = false;
+            btn.innerText = "Enregistrer dans la Base de Données";
+
+            if (error) {
+                alert("Erreur lors de l'enregistrement : " + error.message);
+            } else {
+                alert("Produit ajouté avec succès !");
+                document.getElementById('add-product-form').reset();
+                closeAdminPanel();
+                fetchProducts();
+            }
+        }
+
+        // Panier
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const count = document.getElementById('cart-count');
+            count.innerText = cart.length;
+            count.classList.toggle('hidden', cart.length === 0);
+
+            const itemsContainer = document.getElementById('cart-items');
+            itemsContainer.innerHTML = cart.map((item, idx) => `
+                <div class="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg text-sm">
+                    <div>
+                        <p class="font-medium text-gray-800">${item.name}</p>
+                        <p class="text-xs text-pink-600 font-bold">${Number(item.price).toLocaleString()} FCFA</p>
+                    </div>
+                    <button onclick="removeFromCart(${idx})" class="text-red-400 hover:text-red-600 text-xs">Supprimer</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+            document.getElementById('cart-total').innerText = `${total.toLocaleString()} FCFA`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('hidden');
+        }
+
+        // WhatsApp Order (Remplacez 24100000000 par votre numéro WhatsApp)
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert("Votre panier est vide.");
+                return;
+            }
+            const phone = "24100000000"; // N'oubliez pas de mettre votre numéro ici !
+            let text = "Bonjour H-Style, je souhaite passer la commande suivante :\n\n";
+            cart.forEach((item, i) => {
+                text += `${i + 1}. ${item.name} - ${Number(item.price).toLocaleString()} FCFA\n`;
+            });
+            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+            text += `\n*Total : ${total.toLocaleString()} FCFA*`;
+
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Filtres
+        function filterCategory(cat) {
+            if (cat === 'all') {
+                renderProducts(allProducts);
+            } else {
+                renderProducts(allProducts.filter(p => p.category === cat));
+            }
+        }
+
+        // Démarrage
+        fetchProducts();
+    </script>
+</body>
+</html>
+:""},
 {id:3,name:"Sac à main YSL style",category:"Sacs",price:35000,oldPrice:0,sizes:"Unique",stock:4,image:""},
 {id:4,name:"Bijoux délicats",category:"Bijoux & Accessoires",price:12000,oldPrice:15000,sizes:"Unique",stock:10,image:""},
 {id:5,name:"Sneakers femme",category:"Chaussures",price:20000,oldPrice:0,sizes:"36 · 37 · 38 · 39 · 40",stock:7,image:""},
