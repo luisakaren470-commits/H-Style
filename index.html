@@ -3,298 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H-Style | E-Commerce Gabon</title>
+    <title>H-Style 🌿 — La mode, selon ton style ♡</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandPrimary: 'var(--primary-color, #ec4899)',
+                        brandSecondary: 'var(--secondary-color, #f472b6)',
+                        brandBg: 'var(--bg-color, #fff5f7)',
+                    },
+                    borderRadius: {
+                        'custom': '1.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary-color: #ec4899;
+            --secondary-color: #f472b6;
+            --bg-color: #fff5f7;
+            --text-color: #4a044e;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .bg-custom-primary { background-color: var(--primary-color); }
+        .text-custom-primary { color: var(--primary-color); }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans pb-24">
+<body class="pb-24 md:pb-12">
 
-    <!-- Header / Navbar -->
-    <header class="bg-white shadow-sm sticky top-0 z-40">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-pink-600 flex items-center gap-2">
-                <span>🌿</span> H-Style
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-pink-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <h1 class="text-2xl font-bold tracking-wide text-custom-primary cursor-pointer" onclick="selectCategory('All')">
+                H-Style 🌿
             </h1>
-            <div class="flex items-center gap-2">
-                <!-- Bouton Admin sécurisé -->
-                <button onclick="promptAdminAccess()" class="bg-pink-100 hover:bg-pink-200 text-pink-700 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1 transition">
-                    <i class="fa-solid fa-lock text-xs"></i> ⚙️ Admin
+            
+            <div class="flex-1 max-w-md hidden sm:block">
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Rechercher une robe, des talons..." class="w-full px-4 py-2 rounded-full border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm">
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="promptAdminAccess()" class="text-xs bg-pink-100 hover:bg-pink-200 text-pink-800 font-semibold px-3 py-1.5 rounded-full transition">
+                    ⚙️ Admin
                 </button>
-                
-                <!-- Bouton Panier -->
-                <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-gray-200 p-2 rounded-lg text-gray-700 transition">
-                    <i class="fa-solid fa-cart-shopping text-lg"></i>
-                    <span id="cart-count" class="absolute -top-1 -right-1 bg-pink-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                <button onclick="toggleCart()" class="relative p-2 bg-pink-50 rounded-full hover:bg-pink-100">
+                    🛍️ <span id="cartCount" class="absolute -top-1 -right-1 bg-custom-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
                 </button>
             </div>
+        </div>
+        <div class="px-4 pb-3 sm:hidden">
+            <input type="text" id="searchInputMobile" oninput="filterProductsMobile()" placeholder="Rechercher un article..." class="w-full px-4 py-2 rounded-full border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm">
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-6">
+    <main class="max-w-6xl mx-auto px-4 py-6">
 
-        <!-- Panneau d'Administration (Masqué par défaut) -->
-        <section id="admin-panel" class="bg-white p-5 rounded-xl shadow-md border border-pink-200 mb-8 hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-user-shield text-pink-600"></i> Administration H-Style
-                </h2>
-                <button onclick="closeAdminPanel()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+        <section id="heroBanner" class="relative rounded-custom overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white p-8 md:p-12 text-center md:text-left flex flex-col items-center md:items-start justify-center min-h-[220px]">
+            <h2 id="bannerTitleDisplay" class="text-3xl md:text-5xl font-extrabold mb-2 drop-shadow">La mode, selon ton style ♡</h2>
+            <p id="bannerSubtitleDisplay" class="text-sm md:text-lg mb-6 opacity-90">Découvre la nouvelle collection féminine tendance au Gabon 🌸</p>
+            <a href="#productsGrid" class="bg-white text-pink-600 font-bold px-6 py-3 rounded-full shadow-md hover:bg-pink-50 transition transform hover:-translate-y-0.5">
+                Découvrir nos articles ✨
+            </a>
+        </section>
+
+        <section class="mb-8">
+            <h3 class="text-lg font-bold mb-4">Catégories</h3>
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                <button onclick="selectCategory('All')" class="px-5 py-2 rounded-full bg-custom-primary text-white text-sm font-medium whitespace-nowrap shadow-sm">Toutes</button>
+                <button onclick="selectCategory('Vêtements')" class="px-5 py-2 rounded-full bg-white text-gray-700 hover:bg-pink-50 text-sm font-medium whitespace-nowrap border border-pink-100 shadow-sm">👗 Vêtements</button>
+                <button onclick="selectCategory('Chaussures')" class="px-5 py-2 rounded-full bg-white text-gray-700 hover:bg-pink-50 text-sm font-medium whitespace-nowrap border border-pink-100 shadow-sm">👠 Chaussures</button>
+                <button onclick="selectCategory('Sacs')" class="px-5 py-2 rounded-full bg-white text-gray-700 hover:bg-pink-50 text-sm font-medium whitespace-nowrap border border-pink-100 shadow-sm">👜 Sacs</button>
+                <button onclick="selectCategory('Bijoux')" class="px-5 py-2 rounded-full bg-white text-gray-700 hover:bg-pink-50 text-sm font-medium whitespace-nowrap border border-pink-100 shadow-sm">💎 Bijoux</button>
+                <button onclick="selectCategory('Beauté')" class="px-5 py-2 rounded-full bg-white text-gray-700 hover:bg-pink-50 text-sm font-medium whitespace-nowrap border border-pink-100 shadow-sm">💄 Beauté</button>
             </div>
-            
-            <form id="add-product-form" onsubmit="handleProductSubmit(event)" class="space-y-4">
+        </section>
+
+        <section>
+            <h3 class="text-lg font-bold mb-4">Nos Produits</h3>
+            <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
+        </section>
+
+        <!-- Modal Produit -->
+        <div id="productModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end md:items-center justify-center p-0 md:p-4">
+            <div class="bg-white w-full max-w-lg rounded-t-3xl md:rounded-custom overflow-hidden max-h-[90vh] overflow-y-auto p-6 space-y-4">
+                <div class="flex justify-between items-start">
+                    <h3 id="modalTitle" class="text-xl font-bold"></h3>
+                    <button onclick="closeProductModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">✕</button>
+                </div>
+                <img id="modalImg" src="" class="w-full h-64 object-cover rounded-2xl">
+                <div class="flex items-center gap-3">
+                    <span id="modalPrice" class="text-2xl font-bold text-custom-primary"></span>
+                    <span id="modalOldPrice" class="text-gray-400 line-through text-sm"></span>
+                </div>
+                <p id="modalDesc" class="text-gray-600 text-sm"></p>
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Nom du produit</label>
-                    <input type="text" id="p-name" required placeholder="ex: Robe Fleurie d'Été" class="w-full p-2.5 border rounded-lg text-sm focus:ring-pink-500 focus:border-pink-500">
+                    <label class="block text-xs font-bold text-gray-500 mb-1">Taille / Pointure / Option :</label>
+                    <select id="modalOptionSelect" class="w-full p-2 border rounded-xl text-sm bg-gray-50"></select>
                 </div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Catégorie</label>
-                        <select id="p-category" required class="w-full p-2.5 border rounded-lg text-sm bg-white">
-                            <option value="Vêtements">Vêtements</option>
-                            <option value="Sacs">Sacs</option>
-                            <option value="Chaussures">Chaussures</option>
-                            <option value="Bijoux">Bijoux</option>
-                            <option value="Beauté">Beauté</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Prix (FCFA)</label>
-                        <input type="number" id="p-price" required placeholder="15000" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">URL de l'image</label>
-                    <input type="url" id="p-image" required placeholder="https://exemple.com/image.jpg" class="w-full p-2.5 border rounded-lg text-sm">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Tailles / Options (séparées par une virgule)</label>
-                        <input type="text" id="p-sizes" placeholder="S, M, L, XL" class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Stock disponible</label>
-                        <input type="number" id="p-stock" value="10" required class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                </div>
-
-                <button type="submit" id="btn-save-product" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 rounded-lg transition text-sm">
-                    Enregistrer dans la Base de Données
-                </button>
-            </form>
-        </section>
-
-        <!-- Filtres par catégorie -->
-        <section class="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
-            <button onclick="filterCategory('all')" class="bg-pink-600 text-white px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm">Tout</button>
-            <button onclick="filterCategory('Vêtements')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Vêtements</button>
-            <button onclick="filterCategory('Sacs')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Sacs</button>
-            <button onclick="filterCategory('Chaussures')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Chaussures</button>
-            <button onclick="filterCategory('Bijoux')" class="bg-white text-gray-600 px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Bijoux</button>
-        </section>
-
-        <!-- Grille de produits -->
-        <section id="products-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="col-span-full text-center py-12 text-gray-400">
-                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-                <p class="text-sm">Chargement du catalogue...</p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Modal du Panier / Commande -->
-    <div id="cart-modal" class="fixed inset-0 bg-black/50 z-50 flex justify-end hidden">
-        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto">
-            <div>
-                <div class="flex justify-between items-center pb-4 border-b">
-                    <h3 class="font-bold text-lg text-gray-800">Votre Panier</h3>
-                    <button onclick="toggleCart()" class="text-gray-400 text-xl"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                
-                <div id="cart-items" class="py-4 space-y-3">
-                    <!-- Articles du panier dynamiques -->
-                </div>
-            </div>
-
-            <div class="border-t pt-4 space-y-4">
-                <div class="flex justify-between text-base font-bold text-gray-800">
-                    <span>Total :</span>
-                    <span id="cart-total">0 FCFA</span>
-                </div>
-                <button onclick="sendWhatsAppOrder()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> Commander sur WhatsApp
+                <button onclick="addCurrentToCart()" class="w-full py-3 bg-custom-primary text-white font-bold rounded-xl shadow-md hover:opacity-90">
+                    Ajouter au Panier 🛍️
                 </button>
             </div>
         </div>
-    </div>
+
+        <!-- Modal Panier -->
+        <div id="cartModal" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
+            <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Votre Panier 🛍️</h3>
+                        <button onclick="toggleCart()" class="text-gray-400 font-bold text-xl">✕</button>
+                    </div>
+                    <div id="cartItems" class="space-y-4 mb-6"></div>
+                </div>
+
+                <div class="border-t pt-4 space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Zone de livraison (Gabon) :</label>
+                        <select id="deliveryZone" onchange="updateCartTotal()" class="w-full p-2 border rounded-xl text-sm bg-gray-50">
+                            <option value="1500">Libreville — 1 500 FCFA</option>
+                            <option value="2000">Akanda — 2 000 FCFA</option>
+                            <option value="3000">Owendo — 3 000 FCFA</option>
+                        </select>
+                    </div>
+
+                    <div class="flex justify-between text-sm"><span>Sous-total</span><span id="cartSubtotal" class="font-bold">0 FCFA</span></div>
+                    <div class="flex justify-between text-sm"><span>Livraison</span><span id="cartDeliveryFee" class="font-bold">1 500 FCFA</span></div>
+                    <div class="flex justify-between text-lg font-bold text-custom-primary border-t pt-2"><span>Total</span><span id="cartTotal">0 FCFA</span></div>
+
+                    <div class="space-y-2 pt-2">
+                        <input type="text" id="custName" placeholder="Nom & Prénom *" class="w-full p-2 border rounded-xl text-sm">
+                        <input type="tel" id="custPhone" placeholder="Numéro de Téléphone *" class="w-full p-2 border rounded-xl text-sm">
+                        <input type="text" id="custAddress" placeholder="Quartier / Repère de livraison *" class="w-full p-2 border rounded-xl text-sm">
+                    </div>
+
+                    <button onclick="sendOrderWhatsApp()" class="w-full py-3 bg-green-500 text-white font-bold rounded-xl shadow-md hover:bg-green-600 transition flex items-center justify-center gap-2">
+                        <span>Commander sur WhatsApp</span> 💬
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panneau Administration -->
+        <div id="adminPanel" class="hidden bg-white p-6 rounded-custom border border-pink-100 shadow-md space-y-6 my-6">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h3 class="text-xl font-bold text-gray-800">⚙️ Tableau de Bord Administration</h3>
+                <button onclick="toggleAdminPanel()" class="text-xs bg-gray-200 px-3 py-1 rounded-full">Fermer</button>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-bold text-sm text-gray-700">➕ Ajouter un Produit dans Supabase</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input type="text" id="newProdName" placeholder="Nom du produit" class="p-2 border rounded-xl text-sm">
+                    <select id="newProdCategory" class="p-2 border rounded-xl text-sm">
+                        <option value="Vêtements">Vêtements</option>
+                        <option value="Chaussures">Chaussures</option>
+                        <option value="Sacs">Sacs</option>
+                        <option value="Bijoux">Bijoux</option>
+                        <option value="Beauté">Beauté</option>
+                    </select>
+                    <input type="number" id="newProdPrice" placeholder="Prix (FCFA)" class="p-2 border rounded-xl text-sm">
+                    <input type="text" id="newProdImg" placeholder="URL de l'image (Ex: https://...)" class="p-2 border rounded-xl text-sm">
+                    <input type="text" id="newProdOptions" placeholder="Tailles/Pointures (ex: S, M, L)" class="p-2 border rounded-xl text-sm">
+                    <input type="number" id="newProdStock" placeholder="Quantité en Stock" class="p-2 border rounded-xl text-sm">
+                </div>
+                <button onclick="addNewProduct()" class="w-full py-2 bg-custom-primary text-white font-bold rounded-xl shadow">Enregistrer dans la Base de Données</button>
+            </div>
+        </div>
+
+    </main>
 
     <script>
-        // --- CONFIGURATION SUPABASE (Collez vos clés ici) ---
-        const SUPABASE_URL = 'https://votre-projet.supabase.co';
-        const SUPABASE_ANON_KEY = 'votre-cle-anon-publique-ici';
-        
-        // Initialisation Supabase
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // 1. ACCÈS SUPABASE
+        const SUPABASE_URL = 'https://lwlzoznucxlwcakfabhd.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3bHpvem51Y3hsd2Nha2ZhYmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MjkwODMsImV4cCI6MjEwNDMwNTA4M30.sjZPIpJsAxMEdoujR6OFyuP_H2waT6jsxl71amtvfHU';
 
-        // Mot de passe Administrateur
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const ADMIN_CODE = "Hstyle2026";
-        
-        let allProducts = [];
-        let cart = [];
 
-        // Accès Admin
+        let products = [];
+        let cart = [];
+        let activeCategory = 'All';
+        let selectedProduct = null;
+
+        // Connexion Admin
         function promptAdminAccess() {
             const pwd = prompt("Entrez le mot de passe Administrateur H-Style :");
             if (pwd === ADMIN_CODE) {
-                document.getElementById('admin-panel').classList.remove('hidden');
+                toggleAdminPanel();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else if (pwd !== null) {
                 alert("Mot de passe incorrect.");
             }
         }
 
-        function closeAdminPanel() {
-            document.getElementById('admin-panel').classList.add('hidden');
+        function toggleAdminPanel() {
+            document.getElementById('adminPanel').classList.toggle('hidden');
         }
 
         // Charger les produits
-        async function fetchProducts() {
-            try {
-                const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-                if (error) throw error;
-                allProducts = data || [];
-                renderProducts(allProducts);
-            } catch (err) {
-                console.error("Erreur de chargement:", err);
-                document.getElementById('products-grid').innerHTML = `<p class="col-span-full text-center text-red-500 py-8">Impossible de charger les produits. Vérifiez vos clés Supabase.</p>`;
-            }
-        }
-
-        function renderProducts(products) {
-            const grid = document.getElementById('products-grid');
-            if (products.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-10">Aucun produit disponible dans le catalogue.</p>`;
-                return;
-            }
-
-            grid.innerHTML = products.map(p => `
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex flex-col justify-between">
-                    <img src="${p.image_url}" alt="${p.name}" class="w-full h-40 object-cover" onerror="this.src='https://via.placeholder.com/300?text=Pas+d+image'">
-                    <div class="p-3 flex-1 flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full font-medium">${p.category}</span>
-                            <h3 class="font-semibold text-sm text-gray-800 mt-1 line-clamp-1">${p.name}</h3>
-                            <p class="text-pink-600 font-bold text-sm mt-1">${Number(p.price).toLocaleString()} FCFA</p>
-                        </div>
-                        <button onclick="addToCart('${p.id}')" class="w-full mt-3 bg-gray-900 hover:bg-pink-600 text-white text-xs py-2 rounded-lg font-medium transition">
-                            Ajouter au panier
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Enregistrer un produit
-        async function handleProductSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-product');
-            btn.innerText = "Enregistrement en cours...";
-            btn.disabled = true;
-
-            const name = document.getElementById('p-name').value;
-            const category = document.getElementById('p-category').value;
-            const price = parseFloat(document.getElementById('p-price').value);
-            const image_url = document.getElementById('p-image').value;
-            const sizes = document.getElementById('p-sizes').value.split(',').map(s => s.trim()).filter(Boolean);
-            const stock = parseInt(document.getElementById('p-stock').value);
-
-            const { error } = await supabase.from('products').insert([{ name, category, price, image_url, sizes, stock }]);
-
-            btn.disabled = false;
-            btn.innerText = "Enregistrer dans la Base de Données";
+        async function fetchProductsFromSupabase() {
+            const { data, error } = await _supabase
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
 
             if (error) {
-                alert("Erreur lors de l'enregistrement : " + error.message);
+                console.error("Erreur de chargement :", error.message);
             } else {
-                alert("Produit ajouté avec succès !");
-                document.getElementById('add-product-form').reset();
-                closeAdminPanel();
-                fetchProducts();
+                products = data || [];
+                renderProducts(products);
             }
         }
 
-        // Gestion du Panier
-        function addToCart(productId) {
-            const product = allProducts.find(p => p.id === productId);
-            if (product) {
-                cart.push(product);
-                updateCartUI();
-            }
-        }
+        // Afficher les produits
+        function renderProducts(items = products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
 
-        function updateCartUI() {
-            const count = document.getElementById('cart-count');
-            count.innerText = cart.length;
-            count.classList.toggle('hidden', cart.length === 0);
-
-            const itemsContainer = document.getElementById('cart-items');
-            itemsContainer.innerHTML = cart.map((item, idx) => `
-                <div class="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg text-sm">
-                    <div>
-                        <p class="font-medium text-gray-800">${item.name}</p>
-                        <p class="text-xs text-pink-600 font-bold">${Number(item.price).toLocaleString()} FCFA</p>
-                    </div>
-                    <button onclick="removeFromCart(${idx})" class="text-red-400 hover:text-red-600 text-xs">Supprimer</button>
-                </div>
-            `).join('');
-
-            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
-            document.getElementById('cart-total').innerText = `${total.toLocaleString()} FCFA`;
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function toggleCart() {
-            document.getElementById('cart-modal').classList.toggle('hidden');
-        }
-
-        // WhatsApp Order
-        function sendWhatsAppOrder() {
-            if (cart.length === 0) {
-                alert("Votre panier est vide.");
+            if (items.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-8">Aucun produit disponible. Ajoute-en un depuis l'Admin ! ✨</p>`;
                 return;
             }
-            const phone = "24100000000"; // Modifiez avec votre numéro WhatsApp
-            let text = "Bonjour H-Style, je souhaite passer la commande suivante :\n\n";
-            cart.forEach((item, i) => {
-                text += `${i + 1}. ${item.name} - ${Number(item.price).toLocaleString()} FCFA\n`;
-            });
-            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
-            text += `\n*Total : ${total.toLocaleString()} FCFA*`;
 
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+            items.forEach(product => {
+                const isPromo = product.old_price > product.price;
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition border border-pink-50 flex flex-col justify-between";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="relative mb-3">
+                            <img src="${product.img || 'https://via.placeholder.com/300'}" class="w-full h-40 object-cover rounded-xl" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=Image+non+disponible'">
+                            ${isPromo ? `<span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">PROMO</span>` : ''}
+                        </div>
+                        <h4 class="font-bold text-sm text-gray-800 line-clamp-1">${product.name}</h4>
+                        <p class="text-xs text-gray-400 mb-2">${product.category}</p>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="font-bold text-pink-600 text-sm">${product.price.toLocaleString()} FCFA</span>
+                            ${isPromo ? `<span class="text-gray-400 line-through text-xs">${product.old_price.toLocaleString()} FCFA</span>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="openProductModal(${product.id})" class="w-full py-2 bg-pink-50 text-pink-600 font-bold rounded-xl text-xs hover:bg-custom-primary hover:text-white transition">
+                        Voir l'article ✨
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        // Filtres
-        function filterCategory(cat) {
-            if (cat === 'all') {
-                renderProducts(allProducts);
+        // Ajouter un produit (Admin)
+        async function addNewProduct() {
+            const name = document.getElementById('newProdName').value;
+            const category = document.getElementById('newProdCategory').value;
+            const price = parseInt(document.getElementById('newProdPrice').value);
+            const img = document.getElementById('newProdImg').value || "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500";
+            const options = document.getElementById('newProdOptions').value;
+            const stock = parseInt(document.getElementById('newProdStock').value) || 1;
+
+            if (!name || !price) {
+                alert("Veuillez renseigner au moins le nom et le prix.");
+                return;
+            }
+
+            const { data, error } = await _supabase
+                .from('products')
+                .insert([{ name, category, price, old_price: 0, img, options, stock }]);
+
+            if (error) {
+                alert("Erreur : " + error.message);
             } else {
-                renderProducts(allProducts.filter(p => p.category === cat));
+                alert("Produit enregistré avec succès ! 🎉");
+                document.getElementById('newProdName').value = '';
+                document.getElementById('newProdPrice').value = '';
+                document.getElementById('newProdImg').value = '';
+                document.getElementById('newProdOptions').value = '';
+                toggleAdminPanel();
+                fetchProductsFromSupabase();
             }
         }
 
-        // Lancement au chargement de la page
-        document.addEventListener('DOMContentLoaded', fetchProducts);
-    </script>
-</body>
-</html>
+        // Commander sur WhatsApp + BDD
+        async function sendOrderWhatsApp() {
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const zoneSelect = document.getElementById('deliveryZone');
+            const zoneText = zoneSelect.options[zoneSelect.selectedIndex].text;
+            const deliveryFee = parseInt(zoneSelect.value);
+
+            if (!name || !phone || !address || cart.length === 0) {
+                alert("Veuillez remplir vos informations et ajouter au moins un produit.");
+                return;
+            }
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let total = subtotal + deliveryFee;
+
+            // Enregistrement dans la table orders Supabase
+            try {
+                await _supabase.from('orders').insert([{ 
+                    customer_name: name, customer_phone: phone, delivery_zone: zoneText, 
+                    delivery_address: address, total_amount: total, status: 'En attente'
+                }]);
+            } catch(e) {
+                console.log("Commande enregistrée sans BDD orders");
+            }
+
+            let summary = `🌸 *NOUVELLE COMMANDE H-STYLE*\n\n👤 *Client :* ${name}\n📞 *Téléphone :* ${phone}\n📍 *Livraison :* ${address} (${zoneText})\n\n*Articles :*\n`;
+            cart.forEach(item => {
+                summary += `- ${item.name} (${item.option}) x${item.qty} : ${(item.price * item.qty).toLocaleString()} FCFA\n`;
+            });
+            summary += `\n💰 *Total à payer : ${total.toLocaleString()} FCFA*`;
+
+            const whatsappPhone = "24162102396"; // Votre numéro WhatsApp
+            window.open(`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(summary)}`, '_blank');
+        }
+
+        // Filtrage & Recherche
+        function selectCategory(cat) {
+            activeCategory = cat;
+            renderProducts(cat === 'All' ? products : products.filter(p => p.category === cat));
+        }
+
+        function filterProducts() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        function filterProductsMobile() {
+            const q = document.getElementById('searchInputMobile').value.toLowerCase();
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        // Gestion Modale Produit
+        function openProductModal(id) {
+            selectedProduct = products.find(p => p.id === id);
+            document.getElementById('modalTitle').innerText = selectedProduct.name;
+            document.getElementById('modalImg').src = selectedProduct.img || 'https://via.placeholder.com/300';
+            
