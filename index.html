@@ -135,10 +135,12 @@
     </div>
 
     <script>
-        // --- Configuration Supabase ---
-        const SUPABASE_URL = 'VOTRE_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'VOTRE_SUPABASE_ANON_KEY';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // --- CONFIGURATION SUPABASE (Collez vos clés ici) ---
+        const SUPABASE_URL = 'https://votre-projet.supabase.co';
+        const SUPABASE_ANON_KEY = 'votre-cle-anon-publique-ici';
+        
+        // Initialisation Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Mot de passe Administrateur
         const ADMIN_CODE = "Hstyle2026";
@@ -146,7 +148,7 @@
         let allProducts = [];
         let cart = [];
 
-        // Mot de passe pour accéder à l'admin
+        // Accès Admin
         function promptAdminAccess() {
             const pwd = prompt("Entrez le mot de passe Administrateur H-Style :");
             if (pwd === ADMIN_CODE) {
@@ -161,28 +163,29 @@
             document.getElementById('admin-panel').classList.add('hidden');
         }
 
-        // Charger les produits au démarrage
+        // Charger les produits
         async function fetchProducts() {
-            const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-            if (error) {
-                console.error("Erreur de chargement:", error);
-                document.getElementById('products-grid').innerHTML = `<p class="col-span-full text-center text-red-500">Erreur lors de la récupération des articles.</p>`;
-                return;
+            try {
+                const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                allProducts = data || [];
+                renderProducts(allProducts);
+            } catch (err) {
+                console.error("Erreur de chargement:", err);
+                document.getElementById('products-grid').innerHTML = `<p class="col-span-full text-center text-red-500 py-8">Impossible de charger les produits. Vérifiez vos clés Supabase.</p>`;
             }
-            allProducts = data || [];
-            renderProducts(allProducts);
         }
 
         function renderProducts(products) {
             const grid = document.getElementById('products-grid');
             if (products.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-10">Aucun produit disponible pour le moment.</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-10">Aucun produit disponible dans le catalogue.</p>`;
                 return;
             }
 
             grid.innerHTML = products.map(p => `
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex flex-col justify-between">
-                    <img src="${p.image_url}" alt="${p.name}" class="w-full h-40 object-cover">
+                    <img src="${p.image_url}" alt="${p.name}" class="w-full h-40 object-cover" onerror="this.src='https://via.placeholder.com/300?text=Pas+d+image'">
                     <div class="p-3 flex-1 flex flex-col justify-between">
                         <div>
                             <span class="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full font-medium">${p.category}</span>
@@ -197,7 +200,7 @@
             `).join('');
         }
 
-        // Ajouter un produit (Admin)
+        // Enregistrer un produit
         async function handleProductSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-save-product');
@@ -226,7 +229,7 @@
             }
         }
 
-        // Panier
+        // Gestion du Panier
         function addToCart(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (product) {
@@ -264,13 +267,13 @@
             document.getElementById('cart-modal').classList.toggle('hidden');
         }
 
-        // WhatsApp Order (Remplacez 24100000000 par votre numéro WhatsApp)
+        // WhatsApp Order
         function sendWhatsAppOrder() {
             if (cart.length === 0) {
                 alert("Votre panier est vide.");
                 return;
             }
-            const phone = "24100000000"; // N'oubliez pas de mettre votre numéro ici !
+            const phone = "24100000000"; // Modifiez avec votre numéro WhatsApp
             let text = "Bonjour H-Style, je souhaite passer la commande suivante :\n\n";
             cart.forEach((item, i) => {
                 text += `${i + 1}. ${item.name} - ${Number(item.price).toLocaleString()} FCFA\n`;
@@ -290,31 +293,8 @@
             }
         }
 
-        // Démarrage
-        fetchProducts();
+        // Lancement au chargement de la page
+        document.addEventListener('DOMContentLoaded', fetchProducts);
     </script>
 </body>
 </html>
-:""},
-{id:3,name:"Sac à main YSL style",category:"Sacs",price:35000,oldPrice:0,sizes:"Unique",stock:4,image:""},
-{id:4,name:"Bijoux délicats",category:"Bijoux & Accessoires",price:12000,oldPrice:15000,sizes:"Unique",stock:10,image:""},
-{id:5,name:"Sneakers femme",category:"Chaussures",price:20000,oldPrice:0,sizes:"36 · 37 · 38 · 39 · 40",stock:7,image:""},
-{id:6,name:"Kit beauté",category:"Beauté",price:18000,oldPrice:0,sizes:"Unique",stock:3,image:""}
-];
-let products=JSON.parse(localStorage.getItem("hs_products")||"null")||fallback;
-let cart=JSON.parse(localStorage.getItem("hs_cart")||"[]");let delivery=true;let commune="Libreville";
-const fees={Libreville:1500,Akanda:2000,Owendo:3000};
-function money(n){return Number(n).toLocaleString("fr-FR")+" FCFA"}function save(){localStorage.setItem("hs_products",JSON.stringify(products));localStorage.setItem("hs_cart",JSON.stringify(cart))}
-function render(filter="Tous"){let cats=["Tous",...new Set(products.map(p=>p.category))];filters.innerHTML=cats.map(c=>`<button class="${c===filter?'active':''}" onclick="render(${JSON.stringify(c)})">${c}</button>`).join("");let list=filter==="Tous"?products:products.filter(p=>p.category===filter);productsEl=list;document.getElementById("products").innerHTML=list.map(p=>`<article class="card">${p.oldPrice>p.price?'<span class="badge">PROMO</span>':''}<button class="heart">♡</button><div class="photo">${p.image?`<img src="${p.image}">`:"✨ PHOTO DU PRODUIT"}</div><div class="body"><h3>${p.name}</h3><div>${p.oldPrice>p.price?`<span class="old">${money(p.oldPrice)}</span>`:''}<span class="price">${money(p.price)}</span></div><div class="stock">${p.stock>0?`Disponible · ${p.stock} en stock`:'<span class="out">RUPTURE DE STOCK</span>'}</div><div class="sizes">${p.sizes||''}</div><button class="add" ${p.stock<=0?'disabled':''} onclick="add(${p.id})">${p.stock>0?'Ajouter au panier':'Rupture de stock'}</button></div></article>`).join("");count.textContent=cart.reduce((a,c)=>a+c.qty,0)}
-function add(id){let p=products.find(x=>x.id===id),c=cart.find(x=>x.id===id);if(!p||p.stock<=0)return;if(c)c.qty++;else cart.push({id,qty:1});save();render();alert("Article ajouté au panier ♡")}
-function openCart(){renderCart();cartModal.classList.add("show")}
-function renderCart(){let total=0,html="";cart.forEach(c=>{let p=products.find(x=>x.id===c.id);if(p){total+=p.price*c.qty;html+=`<div class="row"><span>${p.name} × ${c.qty}</span><b>${money(p.price*c.qty)}</b></div>`}});cartItems.innerHTML=html||"<p>Ton panier est vide.</p>";cartTotal.textContent=html?"Sous-total : "+money(total):""}
-function checkout(){if(!cart.length)return alert("Ton panier est vide.");closeModal("cartModal");let a=JSON.parse(localStorage.getItem("hs_account")||"null");if(a){custName.value=a.name||"";custPhone.value=a.phone||""}updateDelivery();checkoutModal.classList.add("show")}
-function setDelivery(v){delivery=v;deliverBtn.classList.toggle("sel",v);pickupBtn.classList.toggle("sel",!v);locFields.style.display=v?"block":"none";updateDelivery()}
-function updateDelivery(){commune=document.getElementById("commune").value;let sub=cart.reduce((s,c)=>{let p=products.find(x=>x.id===c.id);return s+(p?p.price*c.qty:0)},0);let fee=delivery?fees[commune]:0;checkoutSummary.innerHTML=`<b>Sous-total :</b> ${money(sub)}<br><b>Livraison :</b> ${delivery?money(fee):"Gratuite (retrait)"}<hr><b>Total :</b> ${money(sub+fee)}`}
-function sendOrder(){let name=custName.value.trim(),phone=custPhone.value.trim(),q=quartier.value.trim();if(!name||!phone)return alert("Renseigne ton nom et ton téléphone.");if(delivery&&!q)return alert("Précise ton quartier pour la livraison.");let sub=cart.reduce((s,c)=>{let p=products.find(x=>x.id===c.id);return s+(p?p.price*c.qty:0)},0),fee=delivery?fees[commune]:0,total=sub+fee;let lines=cart.map(c=>{let p=products.find(x=>x.id===c.id);return p?`- ${p.name} x${c.qty} : ${money(p.price*c.qty)}`:""}).join("\n");let loc=delivery?`Livraison : ${commune}\nQuartier : ${q}\nFrais de livraison : ${money(fee)}`:"Retrait en main propre : oui\nFrais de livraison : 0 FCFA";let msg=`Bonjour H-Style🌿 ♡\nJe souhaite passer une commande.\n\nClient : ${name}\nTéléphone : ${phone}\n\n${lines}\n\nSous-total : ${money(sub)}\n${loc}\nTotal : ${money(total)}\n\nPaiement : Airtel 074232535 ou Libertis 062102396.`;localStorage.setItem("hs_account",JSON.stringify({name,phone}));window.open("https://wa.me/24162102396?text="+encodeURIComponent(msg),"_blank")}
-function openAccount(){let a=JSON.parse(localStorage.getItem("hs_account")||"null");if(a){accName.value=a.name||"";accPhone.value=a.phone||"";accStatus.textContent="Compte enregistré sur cet appareil ♡"}accountModal.classList.add("show")}
-function saveAccount(){if(!accName.value.trim()||!accPhone.value.trim())return alert("Renseigne ton nom et ton téléphone.");localStorage.setItem("hs_account",JSON.stringify({name:accName.value.trim(),phone:accPhone.value.trim()}));accStatus.textContent="C'est enregistré ♡"}
-function closeModal(id){document.getElementById(id).classList.remove("show")}
-const filters=document.getElementById("filters"),productsEl=document.getElementById("products");render();
-</script></body></html>
