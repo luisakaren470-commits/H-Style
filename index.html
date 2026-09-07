@@ -51,7 +51,7 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <button id="adminBtnToggle" onclick="promptAdminAccess()" class="text-xs bg-pink-100 hover:bg-pink-200 text-pink-800 font-semibold px-3 py-1.5 rounded-full transition">
+                <button onclick="toggleAdminPanel()" class="text-xs bg-pink-100 hover:bg-pink-200 text-pink-800 font-semibold px-3 py-1.5 rounded-full transition">
                     ⚙️ Admin
                 </button>
                 <button onclick="toggleCart()" class="relative p-2 bg-pink-50 rounded-full hover:bg-pink-100">
@@ -66,19 +66,14 @@
 
     <main class="max-w-6xl mx-auto px-4 py-6">
 
-        <!-- Bannière Hero -->
-        <section id="heroBanner" class="relative rounded-custom overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white p-8 md:p-12 text-center md:text-left flex flex-col items-center md:items-start justify-center min-h-[220px] bg-cover bg-center">
-            <div class="absolute inset-0 bg-black/20"></div>
-            <div class="relative z-10">
-                <h2 id="bannerTitleDisplay" class="text-3xl md:text-5xl font-extrabold mb-2 drop-shadow">La mode, selon ton style ♡</h2>
-                <p id="bannerSubtitleDisplay" class="text-sm md:text-lg mb-6 opacity-90">Découvre la nouvelle collection féminine tendance au Gabon 🌸</p>
-                <a href="#productsGrid" class="bg-white text-pink-600 font-bold px-6 py-3 rounded-full shadow-md hover:bg-pink-50 transition inline-block">
-                    Découvrir nos articles ✨
-                </a>
-            </div>
+        <section id="heroBanner" class="relative rounded-custom overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white p-8 md:p-12 text-center md:text-left flex flex-col items-center md:items-start justify-center min-h-[220px]">
+            <h2 id="bannerTitleDisplay" class="text-3xl md:text-5xl font-extrabold mb-2 drop-shadow">La mode, selon ton style ♡</h2>
+            <p id="bannerSubtitleDisplay" class="text-sm md:text-lg mb-6 opacity-90">Découvre la nouvelle collection féminine tendance au Gabon 🌸</p>
+            <a href="#productsGrid" class="bg-white text-pink-600 font-bold px-6 py-3 rounded-full shadow-md hover:bg-pink-50 transition transform hover:-translate-y-0.5">
+                Découvrir nos articles ✨
+            </a>
         </section>
 
-        <!-- Catégories -->
         <section class="mb-8">
             <h3 class="text-lg font-bold mb-4">Catégories</h3>
             <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
@@ -91,13 +86,12 @@
             </div>
         </section>
 
-        <!-- Grille de Produits -->
         <section>
             <h3 class="text-lg font-bold mb-4">Nos Produits</h3>
-            <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
+            <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                </div>
         </section>
 
-        <!-- Modal Produit -->
         <div id="productModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end md:items-center justify-center p-0 md:p-4">
             <div class="bg-white w-full max-w-lg rounded-t-3xl md:rounded-custom overflow-hidden max-h-[90vh] overflow-y-auto p-6 space-y-4">
                 <div class="flex justify-between items-start">
@@ -120,7 +114,6 @@
             </div>
         </div>
 
-        <!-- Modal Panier -->
         <div id="cartModal" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
             <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto">
                 <div>
@@ -158,19 +151,16 @@
             </div>
         </div>
 
-        <!-- Panneau Administration -->
-        <div id="adminPanel" class="hidden bg-white p-6 rounded-custom border border-pink-100 shadow-md space-y-8 my-6">
+        <div id="adminPanel" class="hidden bg-white p-6 rounded-custom border border-pink-100 shadow-md space-y-6 my-6">
             <div class="flex justify-between items-center border-b pb-4">
                 <h3 class="text-xl font-bold text-gray-800">⚙️ Tableau de Bord Administration</h3>
-                <button onclick="toggleAdminPanel()" class="text-xs bg-gray-200 px-3 py-1 rounded-full hover:bg-gray-300">Fermer</button>
+                <button onclick="toggleAdminPanel()" class="text-xs bg-gray-200 px-3 py-1 rounded-full">Fermer</button>
             </div>
 
-            <!-- Formulaire Ajouter / Modifier Produit -->
-            <div class="space-y-4 bg-pink-50/50 p-4 rounded-2xl border border-pink-100">
-                <h4 id="adminFormTitle" class="font-bold text-sm text-pink-700">➕ Ajouter / Modifier un Produit</h4>
-                <input type="hidden" id="editProductId">
+            <div class="space-y-4">
+                <h4 class="font-bold text-sm text-gray-700">➕ Ajouter un Produit dans Supabase</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input type="text" id="newProdName" placeholder="Nom du produit *" class="p-2 border rounded-xl text-sm">
+                    <input type="text" id="newProdName" placeholder="Nom du produit" class="p-2 border rounded-xl text-sm">
                     <select id="newProdCategory" class="p-2 border rounded-xl text-sm">
                         <option value="Vêtements">Vêtements</option>
                         <option value="Chaussures">Chaussures</option>
@@ -178,121 +168,63 @@
                         <option value="Bijoux">Bijoux</option>
                         <option value="Beauté">Beauté</option>
                     </select>
-                    <input type="number" id="newProdPrice" placeholder="Prix (FCFA) *" class="p-2 border rounded-xl text-sm">
-                    <input type="number" id="newProdOldPrice" placeholder="Ancien Prix (FCFA - Optionnel)" class="p-2 border rounded-xl text-sm">
+                    <input type="number" id="newProdPrice" placeholder="Prix (FCFA)" class="p-2 border rounded-xl text-sm">
                     <input type="text" id="newProdImg" placeholder="URL de l'image (Ex: https://...)" class="p-2 border rounded-xl text-sm">
                     <input type="text" id="newProdOptions" placeholder="Tailles/Pointures (ex: S, M, L)" class="p-2 border rounded-xl text-sm">
-                    <input type="number" id="newProdStock" placeholder="Stock disponible" class="p-2 border rounded-xl text-sm">
+                    <input type="number" id="newProdStock" placeholder="Quantité en Stock" class="p-2 border rounded-xl text-sm">
                 </div>
-                <div class="flex gap-2">
-                    <button onclick="saveProduct()" class="flex-1 py-2 bg-custom-primary text-white font-bold rounded-xl shadow hover:opacity-90">Enregistrer le Produit</button>
-                    <button id="cancelEditBtn" onclick="resetAdminForm()" class="hidden px-4 py-2 bg-gray-200 text-gray-700 font-bold rounded-xl">Annuler</button>
-                </div>
-            </div>
-
-            <!-- Éditeur Bannière d'Accueil -->
-            <div class="space-y-3 border-t pt-4">
-                <h4 class="font-bold text-sm text-gray-700">🖼️ Personnaliser la Bannière d'Accueil</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input type="text" id="bannerTitleInput" placeholder="Titre principal" class="p-2 border rounded-xl text-sm">
-                    <input type="text" id="bannerSubtitleInput" placeholder="Sous-titre" class="p-2 border rounded-xl text-sm">
-                    <input type="text" id="bannerBgInput" placeholder="URL Image de fond (Optionnel)" class="p-2 border rounded-xl text-sm col-span-2">
-                </div>
-                <button onclick="updateBannerSettings()" class="px-4 py-2 bg-purple-600 text-white font-bold text-xs rounded-xl shadow">Appliquer les modifications</button>
-            </div>
-
-            <!-- Liste des Commandes Client -->
-            <div class="space-y-3 border-t pt-4">
-                <div class="flex justify-between items-center">
-                    <h4 class="font-bold text-sm text-gray-700">📦 Historique des Commandes (Supabase)</h4>
-                    <button onclick="fetchOrders()" class="text-xs text-pink-600 font-semibold underline">Rafraîchir</button>
-                </div>
-                <div id="ordersList" class="space-y-3 max-h-60 overflow-y-auto">
-                    <p class="text-xs text-gray-400">Chargement des commandes...</p>
-                </div>
+                <button onclick="addNewProduct()" class="w-full py-2 bg-custom-primary text-white font-bold rounded-xl shadow">Enregistrer dans la Base de Données</button>
             </div>
         </div>
 
     </main>
 
     <script>
-        // CONFIGURATION SUPABASE
+        // 1. VOS ACCÈS SUPABASE
         const SUPABASE_URL = 'https://lwlzoznucxlwcakfabhd.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInRelZiI6Imx3bHpvem51Y3hsd2Nha2ZhYmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MjkwODMsImV4cCI6MjEwNDMwNTA4M30.sjZPIpJsAxMEdoujR6OFyuP_H2waT6jsxl71amtvfHU';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3bHpvem51Y3hsd2Nha2ZhYmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MjkwODMsImV4cCI6MjEwNDMwNTA4M30.sjZPIpJsAxMEdoujR6OFyuP_H2waT6jsxl71amtvfHU';
 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const ADMIN_CODE = "Hstyle2026";
 
         let products = [];
         let cart = [];
         let activeCategory = 'All';
         let selectedProduct = null;
-        let isAdminLoggedIn = false;
 
-        // Connexion Admin
-        function promptAdminAccess() {
-            if (isAdminLoggedIn) {
-                toggleAdminPanel();
-                return;
-            }
-            const pwd = prompt("Entrez le mot de passe Administrateur H-Style :");
-            if (pwd === ADMIN_CODE) {
-                isAdminLoggedIn = true;
-                document.getElementById('adminBtnToggle').innerText = "⚙️ Admin (Connecté)";
-                toggleAdminPanel();
-                fetchOrders();
-                renderProducts(); // Pour afficher les boutons admin sur les cartes
-            } else if (pwd !== null) {
-                alert("Mot de passe incorrect.");
-            }
-        }
-
-        function toggleAdminPanel() {
-            document.getElementById('adminPanel').classList.toggle('hidden');
-        }
-
-        // Charger Produits
+        // Charger les produits au démarrage
         async function fetchProductsFromSupabase() {
             const { data, error } = await _supabase
                 .from('products')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (!error && data) {
-                products = data;
-                renderProducts();
+            if (error) {
+                console.error("Erreur de chargement :", error.message);
+            } else {
+                products = data || [];
+                renderProducts(products);
             }
         }
 
-        // Afficher Produits
+        // Afficher les produits
         function renderProducts(items = products) {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
 
             if (items.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-8">Aucun produit disponible. ✨</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-8">Aucun produit disponible. Ajoute-en un depuis l'Admin ! ✨</p>`;
                 return;
             }
 
             items.forEach(product => {
                 const isPromo = product.old_price > product.price;
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition border border-pink-50 flex flex-col justify-between relative";
+                card.className = "bg-white rounded-2xl p-3 shadow-sm hover:shadow-md transition border border-pink-50 flex flex-col justify-between";
                 
-                let adminActions = '';
-                if (isAdminLoggedIn) {
-                    adminActions = `
-                        <div class="flex gap-1 mt-2 border-t pt-2">
-                            <button onclick="prepareEditProduct(${product.id})" class="flex-1 py-1 bg-amber-100 text-amber-800 font-bold rounded-lg text-[10px]">Modifier</button>
-                            <button onclick="deleteProduct(${product.id})" class="flex-1 py-1 bg-red-100 text-red-700 font-bold rounded-lg text-[10px]">Supprimer</button>
-                        </div>
-                    `;
-                }
-
                 card.innerHTML = `
                     <div>
                         <div class="relative mb-3">
-                            <img src="${product.img || 'https://via.placeholder.com/300'}" class="w-full h-40 object-cover rounded-xl" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300?text=Image+non+disponible'">
+                            <img src="${product.img || 'https://via.placeholder.com/300'}" class="w-full h-40 object-cover rounded-xl" alt="${product.name}">
                             ${isPromo ? `<span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">PROMO</span>` : ''}
                         </div>
                         <h4 class="font-bold text-sm text-gray-800 line-clamp-1">${product.name}</h4>
@@ -302,35 +234,111 @@
                             ${isPromo ? `<span class="text-gray-400 line-through text-xs">${product.old_price.toLocaleString()} FCFA</span>` : ''}
                         </div>
                     </div>
-                    <div>
-                        <button onclick="openProductModal(${product.id})" class="w-full py-2 bg-pink-50 text-pink-600 font-bold rounded-xl text-xs hover:bg-custom-primary hover:text-white transition">
-                            Voir l'article ✨
-                        </button>
-                        ${adminActions}
-                    </div>
+                    <button onclick="openProductModal(${product.id})" class="w-full py-2 bg-pink-50 text-pink-600 font-bold rounded-xl text-xs hover:bg-custom-primary hover:text-white transition">
+                        Voir l'article ✨
+                    </button>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // Enregistrer / Modifier un produit
-        async function saveProduct() {
-            const editId = document.getElementById('editProductId').value;
+        // Ajouter un produit depuis l'admin
+        async function addNewProduct() {
             const name = document.getElementById('newProdName').value;
             const category = document.getElementById('newProdCategory').value;
             const price = parseInt(document.getElementById('newProdPrice').value);
-            const old_price = parseInt(document.getElementById('newProdOldPrice').value) || 0;
             const img = document.getElementById('newProdImg').value || "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500";
             const options = document.getElementById('newProdOptions').value;
             const stock = parseInt(document.getElementById('newProdStock').value) || 1;
 
             if (!name || !price) {
-                alert("Veuillez renseigner le nom et le prix.");
+                alert("Veuillez renseigner au moins le nom et le prix.");
                 return;
             }
 
-            const payload = { name, category, price, old_price, img, options, stock };
+            const { data, error } = await _supabase
+                .from('products')
+                .insert([{ name, category, price, old_price: 0, img, options, stock }]);
 
-            let error = null;
-            if (editId) {
-                const res = aw
+            if (error) {
+                alert("Erreur : " + error.message);
+            } else {
+                alert("Produit enregistré avec succès ! 🎉");
+                document.getElementById('newProdName').value = '';
+                document.getElementById('newProdPrice').value = '';
+                fetchProductsFromSupabase();
+            }
+        }
+
+        // Commander sur WhatsApp + enregistrement BDD
+        async function sendOrderWhatsApp() {
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const zoneSelect = document.getElementById('deliveryZone');
+            const zoneText = zoneSelect.options[zoneSelect.selectedIndex].text;
+            const deliveryFee = parseInt(zoneSelect.value);
+
+            if (!name || !phone || !address || cart.length === 0) {
+                alert("Veuillez remplir vos informations et ajouter au moins un produit.");
+                return;
+            }
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let total = subtotal + deliveryFee;
+
+            await _supabase.from('orders').insert([{ 
+                customer_name: name, customer_phone: phone, delivery_zone: zoneText, 
+                delivery_address: address, total_amount: total, status: 'En attente'
+            }]);
+
+            let summary = `🌸 *NOUVELLE COMMANDE H-STYLE*\n\n👤 *Client :* ${name}\n📞 *Téléphone :* ${phone}\n📍 *Livraison :* ${address} (${zoneText})\n\n*Articles :*\n`;
+            cart.forEach(item => {
+                summary += `- ${item.name} (${item.option}) x${item.qty} : ${(item.price * item.qty).toLocaleString()} FCFA\n`;
+            });
+            summary += `\n💰 *Total à payer : ${total.toLocaleString()} FCFA*`;
+
+            window.open(`https://wa.me/24100000000?text=${encodeURIComponent(summary)}`, '_blank');
+        }
+
+        // Fonctions Utilitaires
+        function selectCategory(cat) {
+            activeCategory = cat;
+            renderProducts(cat === 'All' ? products : products.filter(p => p.category === cat));
+        }
+
+        function filterProducts() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        function filterProductsMobile() {
+            const q = document.getElementById('searchInputMobile').value.toLowerCase();
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        function openProductModal(id) {
+            selectedProduct = products.find(p => p.id === id);
+            document.getElementById('modalTitle').innerText = selectedProduct.name;
+            document.getElementById('modalImg').src = selectedProduct.img || 'https://via.placeholder.com/300';
+            document.getElementById('modalPrice').innerText = selectedProduct.price.toLocaleString() + " FCFA";
+            document.getElementById('modalDesc').innerText = `Stock disponible : ${selectedProduct.stock} pièce(s)`;
+
+            const select = document.getElementById('modalOptionSelect');
+            select.innerHTML = '';
+            const opts = selectedProduct.options ? selectedProduct.options.split(',') : ['Taille unique'];
+            opts.forEach(opt => select.innerHTML += `<option value="${opt.trim()}">${opt.trim()}</option>`);
+
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); }
+
+        function addCurrentToCart() {
+            const opt = document.getElementById('modalOptionSelect').value;
+            const existing = cart.find(item => item.id === selectedProduct.id && item.option === opt);
+            if (existing) { existing.qty++; } else { cart.push({ ...selectedProduct, option: opt, qty: 1 }); }
+            updateCartUI(); closeProductModal(); toggleCart();
+        }
+
+        function toggleCart() { docume
